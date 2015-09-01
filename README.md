@@ -14,3 +14,19 @@ The package will provide in the near future
 multisets of those elements themselves are orderable
 * **eq_dict**/**eq_ordered_dict** - dictionary implementations where the keys do not need to be hashable (linear time). If the values admit a total ordering, **eq_ordered_dict** operates in logarithmic time.
 * **bijection** - a one-to-one mapping
+
+## Usage
+### puredict
+
+    from more_collections import puredict
+    e = puredict.empty().insert(5, "foo")
+    e = e.insert(3, "bar").remove(5)
+    print(e[3])
+
+Insert and Remove can also be called statically:
+    `puredict.insert(puredict.empty(), 5, "bar")`
+
+The constructor supports common dictionary constructors:
+
+    puredict.puredict({3:6, 2:12, 4:1})
+    puredict.puredict((a, a**4) for a in range(6))
