@@ -30,3 +30,11 @@ The constructor supports common dictionary constructors:
 
     puredict.puredict({3:6, 2:12, 4:1})
     puredict.puredict((a, a**4) for a in range(6))
+
+## Todo
+
+* implement missing collections
+* more tests
+* nice documentation
+* packaging to PyPi
+* version numbers
