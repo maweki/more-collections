@@ -12,7 +12,7 @@ The package will provide in the near future
 * **multiset** - a multiset implementation
 * **orderable_multiset** - a multiset implementation for orderable carriers so that
 multisets of those elements themselves are orderable
-* **eq_dict**/**eq_ordered_dict** - dictionary implementations where the keys do not need to be hashable (linear time). If the values admit a total ordering, **eq_ordered_dict** operates in logarithmic time.
+* **eq_dict**/**eq_ordered_dict** - dictionary implementations where the keys do not need to be hashable (linear time). If the keys admit a total ordering, **eq_ordered_dict** operates in logarithmic time.
 * **bijection** - a one-to-one mapping
 
 ## Usage
