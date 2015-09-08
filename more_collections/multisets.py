@@ -1,4 +1,7 @@
-from collections.abc import Set, MutableSet, Hashable, Iterable
+try: # Python 2.7 compat
+    from collections.abc import Set, MutableSet, Hashable, Iterable
+except ImportError:
+    from collections import Set, MutableSet, Hashable, Iterable
 from collections import defaultdict
 from functools import reduce
 from itertools import chain
