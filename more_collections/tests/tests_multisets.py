@@ -138,3 +138,4 @@ class TestPuredict(TestCase):
             ]
             for l, r, a in ds:
                 self.assertEqual(a, len(l - r), (l,r))
+                self.assertIs(type(l), type(l - r))
