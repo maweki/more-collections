@@ -48,6 +48,20 @@ class _base_multiset(Set):
             raise NotImplementedError()
         return other <= self
 
+    def __sub__(self, other):
+        if isinstance(other, _base_multiset):
+            result = self.__class__()
+            for element in self.__bag:
+                amount = self.count(element) - other.count(element)
+                if amount > 0:
+                    result.__bag[element] = amount
+            return result
+
+        if isinstance(other, Iterable):
+            return self - self.__class__(other)
+
+        raise NotImplementedError()
+
     def count(self, item):
         return self.__bag.get(item, 0)
 

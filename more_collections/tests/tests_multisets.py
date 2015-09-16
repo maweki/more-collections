@@ -109,3 +109,32 @@ class TestPuredict(TestCase):
                     m < o
                 with self.assertRaises(NotImplementedError):
                     o < m
+
+    def test_minus(self):
+        for c in self.constructors:
+            s1, s2, s3 = '123123', '123', '134'
+            ms1 = c(s1)
+            ms2 = c(s2)
+            ms3 = c(s3)
+            ds = [
+                (ms1, ms1, 0),
+                (ms1, ms2, 3),
+                (ms1, ms3, 4),
+                (ms2, ms1, 0),
+                (ms2, ms2, 0),
+                (ms2, ms3, 1),
+                (ms3, ms1, 1),
+                (ms3, ms2, 1),
+                (ms3, ms3, 0),
+                (ms1, s1, 0),
+                (ms1, s2, 3),
+                (ms1, s3, 4),
+                (ms2, s1, 0),
+                (ms2, s2, 0),
+                (ms2, s3, 1),
+                (ms3, s1, 1),
+                (ms3, s2, 1),
+                (ms3, s3, 0)
+            ]
+            for l, r, a in ds:
+                self.assertEqual(a, len(l - r), (l,r))
