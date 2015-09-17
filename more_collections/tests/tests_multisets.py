@@ -110,32 +110,34 @@ class TestPuredict(TestCase):
                 with self.assertRaises(NotImplementedError):
                     o < m
 
-    def test_minus(self):
+    def test_operators(self):
         for c in self.constructors:
             s1, s2, s3 = '123123', '123', '134'
             ms1 = c(s1)
             ms2 = c(s2)
             ms3 = c(s3)
             ds = [
-                (ms1, ms1, 0),
-                (ms1, ms2, 3),
-                (ms1, ms3, 4),
-                (ms2, ms1, 0),
-                (ms2, ms2, 0),
-                (ms2, ms3, 1),
-                (ms3, ms1, 1),
-                (ms3, ms2, 1),
-                (ms3, ms3, 0),
-                (ms1, s1, 0),
-                (ms1, s2, 3),
-                (ms1, s3, 4),
-                (ms2, s1, 0),
-                (ms2, s2, 0),
-                (ms2, s3, 1),
-                (ms3, s1, 1),
-                (ms3, s2, 1),
-                (ms3, s3, 0)
+                (ms1, s1, 0, 6, 6),
+                (ms1, s2, 3, 6, 3),
+                (ms1, s3, 4, 7, 2),
+                (ms2, s1, 0, 6, 3),
+                (ms2, s2, 0, 3, 3),
+                (ms2, s3, 1, 4, 2),
+                (ms3, s1, 1, 7, 2),
+                (ms3, s2, 1, 4, 2),
+                (ms3, s3, 0, 3, 3)
             ]
-            for l, r, a in ds:
-                self.assertEqual(a, len(l - r), (l,r))
-                self.assertIs(type(l), type(l - r))
+            for l, _r, minus, union, intersection in ds:
+                for r in (_r, c(_r)):
+                    self.assertEqual(minus, len(l - r), (l,r))
+                    self.assertIs(type(l), type(l - r))
+
+                    plus = len(l) + len(r)
+                    self.assertEqual(plus, len(l + r), (l,r))
+                    self.assertIs(type(l), type(l + r))
+
+                    self.assertEqual(union, len(l | r), (l,r))
+                    self.assertIs(type(l), type(l | r))
+
+                    self.assertEqual(intersection, len(l & r), (l,r))
+                    self.assertIs(type(l), type(l & r))

@@ -56,7 +56,7 @@ class _base_multiset(Set):
     def __combine(self, amnt_op, this_op, other):
         if isinstance(other, _base_multiset):
             result = self.__class__()
-            for element in self.__bag:
+            for element in chain(self.__bag, other.__bag):
                 amount = amnt_op(self.count(element), other.count(element))
                 if amount > 0:
                     result.__bag[element] = amount
@@ -67,7 +67,10 @@ class _base_multiset(Set):
 
         raise NotImplementedError()
 
-    __sub__ = partialmethod(__combine, operator.sub, (lambda l, r: l - r))
+    __sub__ = partialmethod(__combine, operator.sub, operator.sub)
+    __add__ = partialmethod(__combine, operator.add, operator.add)
+    __or__ = partialmethod(__combine, max, operator.or_)
+    __and__ = partialmethod(__combine, min, operator.and_)
 
     def count(self, item):
         return self.__bag.get(item, 0)
