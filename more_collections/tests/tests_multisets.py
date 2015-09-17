@@ -117,17 +117,17 @@ class TestPuredict(TestCase):
             ms2 = c(s2)
             ms3 = c(s3)
             ds = [
-                (ms1, s1, 0, 6, 6),
-                (ms1, s2, 3, 6, 3),
-                (ms1, s3, 4, 7, 2),
-                (ms2, s1, 0, 6, 3),
-                (ms2, s2, 0, 3, 3),
-                (ms2, s3, 1, 4, 2),
-                (ms3, s1, 1, 7, 2),
-                (ms3, s2, 1, 4, 2),
-                (ms3, s3, 0, 3, 3)
+                (ms1, s1, 0, 6, 6, 0),
+                (ms1, s2, 3, 6, 3, 3),
+                (ms1, s3, 4, 7, 2, 5),
+                (ms2, s1, 0, 6, 3, 3),
+                (ms2, s2, 0, 3, 3, 0),
+                (ms2, s3, 1, 4, 2, 2),
+                (ms3, s1, 1, 7, 2, 5),
+                (ms3, s2, 1, 4, 2, 2),
+                (ms3, s3, 0, 3, 3, 0)
             ]
-            for l, _r, minus, union, intersection in ds:
+            for l, _r, minus, union, intersection, disjointunion in ds:
                 for r in (_r, c(_r)):
                     self.assertEqual(minus, len(l - r), (l,r))
                     self.assertIs(type(l), type(l - r))
@@ -141,3 +141,8 @@ class TestPuredict(TestCase):
 
                     self.assertEqual(intersection, len(l & r), (l,r))
                     self.assertIs(type(l), type(l & r))
+
+                    self.assertEqual(disjointunion, len(l ^ r), (l,r))
+                    self.assertIs(type(l), type(l ^ r))
+
+                    self.assertEqual(l ^ r, (l | r) - (l & r))

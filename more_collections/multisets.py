@@ -71,6 +71,7 @@ class _base_multiset(Set):
     __add__ = partialmethod(__combine, operator.add, operator.add)
     __or__ = partialmethod(__combine, max, operator.or_)
     __and__ = partialmethod(__combine, min, operator.and_)
+    __xor__ = partialmethod(__combine, lambda l, r: abs(l - r), operator.xor)
 
     def count(self, item):
         return self.__bag.get(item, 0)
