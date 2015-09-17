@@ -9,7 +9,7 @@ import operator
 try: # Python compat < 3.4
     from functools import partialmethod
 except ImportError:
-    from common import partialmethod
+    from .common import partialmethod
 
 class _base_multiset(Set):
 
