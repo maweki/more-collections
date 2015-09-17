@@ -1,4 +1,4 @@
-try: # Python 2.7 compat
+try: # Python compat < 3.3
     from collections.abc import Set, MutableSet, Hashable, Iterable
 except ImportError:
     from collections import Set, MutableSet, Hashable, Iterable
