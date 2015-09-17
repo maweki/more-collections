@@ -3,8 +3,9 @@ try: # Python 2.7 compat
 except ImportError:
     from collections import Set, MutableSet, Hashable, Iterable
 from collections import defaultdict
-from functools import reduce
+from functools import reduce, partialmethod
 from itertools import chain
+import operator
 
 class _base_multiset(Set):
 
@@ -48,19 +49,21 @@ class _base_multiset(Set):
             raise NotImplementedError()
         return other <= self
 
-    def __sub__(self, other):
+    def __combine(self, amnt_op, this_op, other):
         if isinstance(other, _base_multiset):
             result = self.__class__()
             for element in self.__bag:
-                amount = self.count(element) - other.count(element)
+                amount = amnt_op(self.count(element), other.count(element))
                 if amount > 0:
                     result.__bag[element] = amount
             return result
 
         if isinstance(other, Iterable):
-            return self - self.__class__(other)
+            return this_op(self, self.__class__(other))
 
         raise NotImplementedError()
+
+    __sub__ = partialmethod(__combine, operator.sub, (lambda l, r: l - r))
 
     def count(self, item):
         return self.__bag.get(item, 0)
