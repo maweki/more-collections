@@ -41,8 +41,8 @@ class puredict_base(Mapping):
     __repr__  = lambda self: repr(dict(self))
 
 class puredict(puredict_base):
-    from_iterable = lambda it: reduce(lambda x, y: insert(x, *y), it, empty())
-    from_mapping = lambda mapping: puredict.from_iterable(mapping.items())
+    from_iterable = staticmethod(lambda it: reduce(lambda x, y: insert(x, *y), it, empty()))
+    from_mapping = staticmethod(lambda mapping: puredict.from_iterable(mapping.items()))
     __new__ = lambda cls, *args, **kwargs: \
         next((cons(args[0]) for (typeof, cons) in (
             (Mapping, cls.from_mapping),
