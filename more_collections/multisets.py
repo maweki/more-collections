@@ -31,7 +31,7 @@ class _base_multiset(Set):
                 yield item
 
     def __le__(self, other):
-        if not isinstance(other, _base_multiset):
+        if not isinstance(other, _base_multiset) or isinstance(other, _orderable_mixin):
             raise NotImplementedError()
         return all((self.count(i) <= other.count(i)) for i in self.__bag)
 
@@ -83,7 +83,31 @@ class _hashing_mixin(Hashable):
         return reduce(xor, pots)
 
 class _orderable_mixin(object):
-    pass
+    # Using the Dershowitz-Manna ordering that gives a well-founded ordering
+    # on multisets if the given carrier is ordered (strings, integers, etc.)
+    # This fails if the union of the sets that are compared has elements that
+    # are incomparible
+    # https://en.wikipedia.org/wiki/Dershowitz%E2%80%93Manna_ordering
+
+    def __le__(self, other):
+        if not (isinstance(other, _orderable_mixin)):
+            raise NotImplementedError()
+        # using definition by Huet and Oppen
+        M, N = self.count, other.count
+        S = frozenset(self | other)
+        ys = (y for y in S if M(y) > N(y))
+        return all(any((y < x and M(x) < N(x)) for x in S) for y in ys)
+
+    def __lt__(self, other):
+        if not (isinstance(other, _orderable_mixin)):
+            raise NotImplementedError()
+        return self != other and self <= other
+
+    def __gt__(self, other):
+        return not (self <= other)
+
+    def __ge__(self, other):
+        return not (self < other)
 
 class multiset(_base_multiset, MutableSet):
     def add(self, item):
@@ -98,8 +122,8 @@ class multiset(_base_multiset, MutableSet):
 class frozenmultiset(_base_multiset, _hashing_mixin):
     pass
 
-class orderable_multiset(multiset, _orderable_mixin):
+class orderable_multiset(_orderable_mixin, multiset):
     pass
 
-class orderable_frozenmultiset(frozenmultiset, _orderable_mixin):
+class orderable_frozenmultiset(_orderable_mixin, frozenmultiset):
     pass

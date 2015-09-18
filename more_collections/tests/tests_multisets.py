@@ -146,3 +146,63 @@ class TestPuredict(TestCase):
                     self.assertIs(type(l), type(l ^ r))
 
                     self.assertEqual(l ^ r, (l | r) - (l & r))
+
+    def test_ordering(self):
+        from itertools import combinations, combinations_with_replacement, product
+        import operator
+
+        for c in self.constructors_ord:
+            m1 = (2,)
+            m2 = (1,3)
+            m3 = (1,1,1,2)
+            m4 = (2,)*4
+            m5 = (1,2)
+            ms = (m1, m2, m3, m4, m5)
+
+            for m in ms:
+                self.assertTrue(c() < c(m))
+                self.assertTrue(m <= m)
+
+            order = list(c(m) for m in (
+                (),
+                m1,
+                m5,
+                m3,
+                m4,
+                m2,
+            ))
+
+            for a, b in combinations(order, 2):
+                self.assertTrue(a < b)
+                self.assertTrue(b > a)
+                self.assertTrue(a <= b)
+                self.assertTrue(b >= a)
+                self.assertFalse(a == b)
+                self.assertFalse(b < a)
+                self.assertFalse(a > b)
+
+            for a, b in combinations_with_replacement(order, 2):
+                self.assertTrue(a <= b)
+                self.assertFalse(a > b)
+
+            for a in order:
+                self.assertTrue(a == a)
+                self.assertTrue(a <= a)
+                self.assertTrue(a >= a)
+                self.assertFalse(a != a)
+
+            for c_ in self.constructors_unord:
+                for a, b in product(order, repeat=2):
+                    if c_(a) < c_(b):
+                        self.assertTrue(a < b)
+                    if c_(a) <= c_(b):
+                        self.assertTrue(a <= b)
+
+                    ops = (operator.lt, operator.le, operator.gt, operator.ge)
+                    for o in ops:
+                        self.assertRaises(NotImplementedError, o, c_(a), c(b))
+                        self.assertRaises(NotImplementedError, o, c_(b), c(a))
+                        self.assertRaises(NotImplementedError, o, c(a), c_(b))
+                        self.assertRaises(NotImplementedError, o, c(b), c_(a))
+
+    
