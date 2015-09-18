@@ -33,7 +33,6 @@ class TestPuredict(TestCase):
         self.assertEqual(e['b'], 'g')
         self.assertEqual(len(e), 2)
 
-    @skip("This is not yet implemented")
     def test_constructor_named_params(self):
         e = puredict.puredict(a=2, b=5)
         self.assertIn("a", e)

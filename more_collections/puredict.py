@@ -43,9 +43,8 @@ class puredict_base(Mapping):
 class puredict(puredict_base):
     from_iterable = lambda it: reduce(lambda x, y: insert(x, *y), it, empty())
     from_mapping = lambda mapping: puredict.from_iterable(mapping.items())
-    __new__ = lambda cls, param=None: next((func(param) for (typeof, func) in (
-                (type(None), empty),
-                (Mapping, cls.from_mapping),
-                (Iterable, cls.from_iterable),
-                (object, lambda _: _raise(ValueError()))
-            ) if isinstance(param, typeof)))
+    __new__ = lambda cls, *args, **kwargs: \
+        next((cons(args[0]) for (typeof, cons) in (
+            (Mapping, cls.from_mapping),
+            (Iterable, cls.from_iterable)
+        ) if (args and isinstance(args[0], typeof))), cls.from_mapping(kwargs))

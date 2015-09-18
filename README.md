@@ -33,6 +33,7 @@ The basic constructor supports common dictionary constructors:
 
     puredict.puredict({3:6, 2:12, 4:1})
     puredict.puredict((a, a**4) for a in range(6))
+    puredict.puredict(a=2, b=5)
 
 ## Todo
 
