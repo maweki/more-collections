@@ -172,6 +172,8 @@ class TestPuredict(TestCase):
                 m2,
             ))
 
+            self.assertEqual(order, list(sorted(order)))
+
             for a, b in combinations(order, 2):
                 self.assertTrue(a < b)
                 self.assertTrue(b > a)
