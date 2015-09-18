@@ -18,6 +18,9 @@ multisets of those elements themselves are orderable
 ## Usage
 ### puredict
 
+The constructors `empty()`, `insert(key, value)` and `remove(key)` create new
+references to immutable dictionaries.
+
     from more_collections import puredict
     e = puredict.empty().insert(5, "foo")
     e = e.insert(3, "bar").remove(5)
@@ -26,7 +29,7 @@ multisets of those elements themselves are orderable
 Insert and Remove can also be called statically:
     `puredict.insert(puredict.empty(), 5, "bar")`
 
-The constructor supports common dictionary constructors:
+The basic constructor supports common dictionary constructors:
 
     puredict.puredict({3:6, 2:12, 4:1})
     puredict.puredict((a, a**4) for a in range(6))
