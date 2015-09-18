@@ -40,3 +40,14 @@ class TestPuredict(TestCase):
         self.assertEqual(e['a'], 2)
         self.assertEqual(e['b'], 5)
         self.assertEqual(len(e), 2)
+
+    def test_constructors_doc(self):
+        dict = puredict.puredict
+        # example from
+        # https://docs.python.org/3/library/stdtypes.html?highlight=dict#dict
+        a = dict(one=1, two=2, three=3)
+        b = {'one': 1, 'two': 2, 'three': 3}
+        c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+        d = dict([('two', 2), ('one', 1), ('three', 3)])
+        e = dict({'three': 3, 'one': 1, 'two': 2})
+        self.assertTrue(a == b == c == d == e)
