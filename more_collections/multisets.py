@@ -129,3 +129,6 @@ class orderable_multiset(_orderable_mixin, multiset):
 
 class orderable_frozenmultiset(_orderable_mixin, frozenmultiset):
     pass
+
+class nestable_orderable_frozenmultiset(orderable_frozenmultiset):
+    pass

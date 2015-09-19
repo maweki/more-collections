@@ -11,7 +11,8 @@ The package will provide in the near future
 
 * **multiset**/**frozenmultiset** - a multiset implementation
 * **orderable_multiset**/**orderable_frozenmultiset** - a multiset implementation for orderable carriers so that
-multisets of those elements themselves are orderable
+multisets of those elements themselves are orderable, even including **nestable_orderable_frozenmultiset**
+which is a multiset-ordering-extension that gives a total ordering for arbitrarily nested multisets over an orderable carrier.
 * **eq_dict**/**eq_ordered_dict** - dictionary implementations where the keys do not need to be hashable (linear time). If the keys admit a total ordering, **eq_ordered_dict** operates in logarithmic time.
 * **bijection** - a one-to-one mapping
 
