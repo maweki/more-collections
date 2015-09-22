@@ -1,5 +1,5 @@
 from unittest import TestCase
-from more_collections.multisets import multiset, frozenmultiset, orderable_multiset, orderable_frozenmultiset
+from more_collections.multisets import multiset, frozenmultiset, orderable_multiset, orderable_frozenmultiset, nestable_orderable_frozenmultiset
 try: # Python compat < 3.3
     from collections.abc import Hashable, Set
 except ImportError:
@@ -254,4 +254,45 @@ class TestPuredict(TestCase):
                         self.assertRaises(NotImplementedError, o, c(a), c_(b))
                         self.assertRaises(NotImplementedError, o, c(b), c_(a))
 
-    
+
+    def test_nestable(self):
+        from itertools import combinations, combinations_with_replacement, product
+
+        c = nestable_orderable_frozenmultiset
+        m1 = c([c([1, 0, 0]), 5, c([c([0]), 1, 1, 1])])
+        m2 = c([c([c(), 1, 2]), c([5, 2, 5]), 5])
+        m3 = c([c([1, 1]), c([c([0]), 1, 2]), 0])
+        l = list(sorted((m1,m2,m3, c())))
+        for m in l:
+            self.assertEqual(l, l)
+
+        for a, b in combinations(l, 2):
+            self.assertTrue(a < b)
+            self.assertTrue(a <= b)
+            self.assertTrue(b > a)
+            self.assertTrue(b >= a)
+            self.assertFalse(a == b)
+            self.assertFalse(b == a)
+            self.assertFalse(a > b)
+            self.assertFalse(a >= b)
+            self.assertFalse(b < a)
+            self.assertFalse(b <= a)
+
+        for a, b in combinations_with_replacement(l, 2):
+            self.assertTrue(a <= b)
+            self.assertTrue(b >= a)
+            self.assertFalse(a > b)
+            self.assertFalse(b < a)
+
+        for a, b in product(l, repeat=2):
+            if a == b:
+                self.assertTrue(a <= b)
+                self.assertTrue(b <= a)
+                self.assertTrue(a >= b)
+                self.assertTrue(b >= a)
+                self.assertEqual(b, a)
+            else:
+                self.assertFalse(a == b)
+                self.assertFalse(b == a)
+                self.assertTrue(a < b or a > b)
+                self.assertTrue(b < a or b > a)

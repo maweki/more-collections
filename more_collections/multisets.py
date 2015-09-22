@@ -131,4 +131,22 @@ class orderable_frozenmultiset(_orderable_mixin, frozenmultiset):
     pass
 
 class nestable_orderable_frozenmultiset(orderable_frozenmultiset):
-    pass
+    def __gt__(self, other):
+        if not isinstance(other, self.__class__):
+            return True
+        return super(self.__class__, self).__gt__(other)
+
+    def __ge__(self, other):
+        if not isinstance(other, self.__class__):
+            return True
+        return super(self.__class__, self).__ge__(other)
+
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return super(self.__class__, self).__lt__(other)
+
+    def __le__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return super(self.__class__, self).__le__(other)
