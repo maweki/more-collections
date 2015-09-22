@@ -109,13 +109,14 @@ class _orderable_mixin(object):
 
 class multiset(_base_multiset, MutableSet):
     def add(self, item):
-        self.__bag[item] = self.__bag.get(item, 0) + 1
+        self._base_multiset__bag[item] = self.count(item) + 1
 
     def discard(self, item):
-        if item in self.__bag:
-            self.__bag[item] = self.__bag[item] - 1
-            if self.__bag[item] == 0:
-                del self.__bag[item]
+        bag = self._base_multiset__bag
+        if item in bag:
+            bag[item] = bag[item] - 1
+            if bag[item] == 0:
+                del bag[item]
 
 class frozenmultiset(_base_multiset, Hashable):
     def __hash__(self):

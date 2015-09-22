@@ -11,6 +11,7 @@ class TestPuredict(TestCase):
     constructors_ord = (orderable_multiset, orderable_frozenmultiset)
     constructors_unord = (multiset, frozenmultiset)
     constructors_hashing = (frozenmultiset, orderable_frozenmultiset)
+    constructors_mutable = (multiset, orderable_multiset)
     constructors = constructors_unord + constructors_ord
     test_depth = 10
 
@@ -46,6 +47,23 @@ class TestPuredict(TestCase):
             ms = c(repeat(0, cnt))
             self.assertEqual(list(repeat(0, cnt)), list(ms))
             self.assertEqual(frozenset((0,)), frozenset(ms))
+
+    def test_mutable(self):
+        r = 2**self.test_depth
+
+        for c in self.constructors_mutable:
+            ms = c()
+            for cnt in range(r):
+                self.assertEqual(len(ms), cnt)
+                ms.add(5)
+                self.assertIn(5, ms)
+                self.assertEqual(len(ms), cnt + 1)
+
+            for cnt in range(r):
+                self.assertIn(5, ms)
+                self.assertEqual(len(ms), r - cnt)
+                ms.discard(5)
+                self.assertEqual(len(ms), r - cnt - 1)
 
     def test_hashing(self):
         for c in self.constructors_hashing:
