@@ -20,6 +20,7 @@ class TestPuredict(TestCase):
         for c in self.constructors:
             ms = c()
             self.assertEqual(0, len(ms))
+            self.assertTrue(isinstance(ms, Set))
 
             ms = c(range(cnt))
             self.assertEqual(cnt, len(ms))
