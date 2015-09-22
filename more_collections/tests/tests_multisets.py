@@ -1,11 +1,16 @@
 from unittest import TestCase
 from more_collections.multisets import multiset, frozenmultiset, orderable_multiset, orderable_frozenmultiset
+try: # Python compat < 3.3
+    from collections.abc import Hashable, Set
+except ImportError:
+    from collections import Hashable, Set
 from itertools import chain, repeat, product
 
 class TestPuredict(TestCase):
 
     constructors_ord = (orderable_multiset, orderable_frozenmultiset)
     constructors_unord = (multiset, frozenmultiset)
+    constructors_hashing = (frozenmultiset, orderable_frozenmultiset)
     constructors = constructors_unord + constructors_ord
     test_depth = 10
 
@@ -40,6 +45,29 @@ class TestPuredict(TestCase):
             ms = c(repeat(0, cnt))
             self.assertEqual(list(repeat(0, cnt)), list(ms))
             self.assertEqual(frozenset((0,)), frozenset(ms))
+
+    def test_hashing(self):
+        for c in self.constructors_hashing:
+            self.assertEqual(hash(c()), hash(c()))
+
+            a = c((1, 1, 2))
+            b = c(a)
+            self.assertEqual(hash(a), hash(b))
+
+            a = c((0, 1, 1))
+            b = c((0, 1, 1))
+            self.assertEqual(hash(a), hash(b))
+
+            with self.assertRaises(AttributeError):
+                c().add(5)
+
+            with self.assertRaises(AttributeError):
+                c().discard(5)
+
+            self.assertEqual(frozenset((a,b)), frozenset((a,)))
+            self.assertEqual(len(set((c(),c()))), 1)
+
+            self.assertTrue(isinstance(c(), Hashable))
 
     def test_le(self):
 

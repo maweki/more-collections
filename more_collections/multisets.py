@@ -76,11 +76,9 @@ class _base_multiset(Set):
     def count(self, item):
         return self.__bag.get(item, 0)
 
-class _hashing_mixin(Hashable):
-    def __hash__(self):
-        from operator import xor
-        pots = (hash(key)**value for (key, value) in self.__bag.items())
-        return reduce(xor, pots)
+    def items(self):
+        return self.__bag.items()
+
 
 class _orderable_mixin(object):
     # Using the Dershowitz-Manna ordering that gives a well-founded ordering
@@ -119,8 +117,11 @@ class multiset(_base_multiset, MutableSet):
             if self.__bag[item] == 0:
                 del self.__bag[item]
 
-class frozenmultiset(_base_multiset, _hashing_mixin):
-    pass
+class frozenmultiset(_base_multiset, Hashable):
+    def __hash__(self):
+        from operator import xor
+        pots = (hash(key)**value for (key, value) in self.items())
+        return reduce(xor, pots, hash(())) ^ hash(self.__class__)
 
 class orderable_multiset(_orderable_mixin, multiset):
     pass
