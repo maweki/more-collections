@@ -296,3 +296,27 @@ class TestPuredict(TestCase):
                 self.assertFalse(b == a)
                 self.assertTrue(a < b or a > b)
                 self.assertTrue(b < a or b > a)
+
+    def test_readme(self):
+        # tests from the readme file
+        from more_collections import multiset
+        l = list(multiset('aaabbc')) # ['b', 'b', 'c', 'a', 'a', 'a']
+        l.sort()
+        self.assertEqual(l, ['a', 'a', 'a', 'b', 'b', 'c'])
+        self.assertEqual(multiset('aaabbc').count('a'), 3)
+        self.assertEqual(frozenset(multiset('aaabbc').items()), frozenset([('b', 2), ('c', 1), ('a', 3)]))
+
+        a, b = multiset('ab'), multiset('bc')
+        self.assertEqual(''.join(sorted(a | b)), 'abc') # 'acb'
+        self.assertEqual(''.join(sorted(a & b)), 'b') # 'b'
+        self.assertEqual(''.join(sorted(a ^ b)), 'ac') # 'ca'
+        self.assertEqual(''.join(sorted(a - b)), 'a') # 'a'
+        self.assertEqual(''.join(sorted(a + b)), 'abbc') # 'acbb'
+
+        from more_collections import orderable_multiset
+        a, b = orderable_multiset('abc'), orderable_multiset('bcd')
+        self.assertTrue(a < b or a > b)
+
+        from more_collections import nestable_orderable_frozenmultiset as nofms
+        a, b = nofms('abc'), nofms((nofms('abc'),'c'))
+        self.assertTrue(a < b or a > b)
