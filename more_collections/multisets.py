@@ -131,6 +131,8 @@ class orderable_frozenmultiset(_orderable_mixin, frozenmultiset):
     pass
 
 class nestable_orderable_frozenmultiset(orderable_frozenmultiset):
+    # Natural multiset extension for nested multisets over an orderable carrier
+    # again gives a well-founded total ordering
     def __gt__(self, other):
         if not isinstance(other, self.__class__):
             return True
