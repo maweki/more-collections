@@ -11,6 +11,8 @@ if all keys and values are hashable.
 multisets of those elements themselves are orderable, even including **nestable_orderable_frozenmultiset**
 which is a multiset-ordering-extension that gives a total ordering for arbitrarily nested multisets over an orderable carrier.
 
+If you want to see any more collections, contact me, open a ticket (I'll happily implement it) or send in a patch.
+
 ## Usage
 ### puredict
 
