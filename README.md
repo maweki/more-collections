@@ -47,6 +47,7 @@ having a multiplicity.
     from more_collections import multiset
     list(multiset('aaabbc')) # ['b', 'b', 'c', 'a', 'a', 'a']
     multiset('aaabbc').count('a') # 3
+    multiset('aaabbc').count('d') # 0
     list(multiset('aaabbc').items()) # [('b', 2), ('c', 1), ('a', 3)]
 
 The relations `<=`, `<`, `>=` and `>` mean, as with normal sets, subset, proper subset, superset and proper superset respectively.
