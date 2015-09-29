@@ -11,10 +11,6 @@ if all keys and values are hashable.
 multisets of those elements themselves are orderable, even including **nestable_orderable_frozenmultiset**
 which is a multiset-ordering-extension that gives a total ordering for arbitrarily nested multisets over an orderable carrier.
 
-The package will provide in the near future
-* **eq_dict**/**eq_ordered_dict** - dictionary implementations where the keys do not need to be hashable (linear time). If the keys admit a total ordering, **eq_ordered_dict** operates in logarithmic time.
-* **bijection** - a one-to-one mapping
-
 ## Usage
 ### puredict
 
@@ -81,8 +77,4 @@ The multisets are dictionary-backed so, like normal sets, items in the set need 
 
 ## Todo
 
-* implement missing collections
-* more tests
 * nice documentation
-* packaging to PyPi
-* version numbers
